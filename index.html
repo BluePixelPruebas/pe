@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+  <title>[VERSIÓN DE PRUEBA] Talent Hub · Prototipo Conceptual Fundación ProEmpleo × BluePixel (TH-2026)</title>
+  
+  <!-- Tipografía BwModelica / Plus Jakarta Sans (ProEmpleo Brand) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="proempleo-theme">
+
+  <!-- BANNER SUPERIOR OFICIAL: VERSIÓN DE PRUEBA (Anti-Phishing / Disclaimer Técnico) -->
+  <aside class="test-disclaimer-strip" role="note" aria-label="Aviso de Versión de Prueba">
+    <div class="disclaimer-content">
+      <span class="disclaimer-badge">ENTORNO DEMO</span>
+      <span><strong>VERSIÓN DE PRUEBA / PROTOTIPO CONCEPTUAL:</strong> Desarrollado por <strong>BluePixel</strong> exclusivamente con fines de evaluación técnica para la Convocatoria <strong>TH-2026</strong>. Este sitio es una demostración navegable, no recopila datos reales y no sustituye al portal oficial de Fundación ProEmpleo Productivo, A.C.</span>
+    </div>
+  </aside>
+
+  <!-- CONTENEDOR MAESTRO DE DEMOSTRACIÓN (CONTENIDO + BARRA VERTICAL DERECHA) -->
+  <div class="demo-layout-container">
+    
+    <!-- CONTENEDOR PRINCIPAL DEL DISPOSITIVO -->
+    <main class="app-viewport mobile-frame" id="app-viewport">
+    
+    <!-- PANTALLA MÓVIL (SHELL DEL DISPOSITIVO) -->
+    <div class="phone-shell" id="phone-shell">
+      
+      <!-- Barra de estado simulada (solo modo celular) -->
+      <div class="phone-notch-bar">
+        <span class="phone-time" id="live-time">09:41</span>
+        <div class="phone-camera-lens"></div>
+        <div class="phone-icons">
+          <span class="signal">●●●●</span>
+          <span class="wifi">5G</span>
+          <span class="battery">100%</span>
+        </div>
+      </div>
+
+      <!-- Notificación Push Simulada (Etapa 2 TDR) -->
+      <div class="push-notification-banner" id="push-banner" style="display: none;" onclick="window.dismissPushNotification()">
+        <div class="push-icon-box">
+          <img src="logo_proempleo.png" alt="ProEmpleo" class="push-app-logo">
+        </div>
+        <div class="push-content-box">
+          <div class="push-header-row">
+            <span class="push-app-name">Fundación ProEmpleo</span>
+            <span class="push-time">Ahora</span>
+          </div>
+          <div class="push-title" id="push-title">Notificación Talent Hub</div>
+          <p class="push-body" id="push-body">Mensaje recibido del programa.</p>
+        </div>
+        <button class="push-close-btn" onclick="event.stopPropagation(); window.dismissPushNotification()" aria-label="Cerrar">✕</button>
+      </div>
+
+      <!-- Canvas de Confeti Ligero para Gamificación (Diagnóstico) -->
+      <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+      <!-- App Header Interior con Logo Oficial de Fundación ProEmpleo -->
+      <header class="mobile-header">
+        <div class="logo-area">
+          <img src="logo_proempleo.png" alt="Fundación ProEmpleo" class="proempleo-brand-logo">
+          <div class="th-title-group">
+            <h1 class="th-title">Talent Hub</h1>
+            <p class="th-subtitle">JUVENTUDES · EMPLEABILIDAD</p>
+          </div>
+        </div>
+        <div class="user-pill" id="user-header-pill" onclick="window.togglePersonaDropdown(event)" title="Cambiar usuario demo (1-clic)">
+          <span class="user-avatar" id="header-avatar">🌱</span>
+          <span class="user-name-short" id="header-username">Mariana</span>
+          <span class="persona-caret">▾</span>
+        </div>
+        <!-- Menú flotante de perfiles rápidos en celular -->
+        <div class="persona-dropdown-menu" id="persona-dropdown-menu" style="display: none;">
+          <div class="dropdown-header">Elegir caso demo (1-clic):</div>
+          <button class="dropdown-item" onclick="window.loadDemoPersona('mariana')">
+            <span>👤</span> Mariana (22a · Empleo Formal)
+          </button>
+          <button class="dropdown-item" onclick="window.loadDemoPersona('carlos')">
+            <span>👦</span> Carlos (16a · Menor con Tutor)
+          </button>
+          <button class="dropdown-item" onclick="window.loadDemoPersona('rodrigo')">
+            <span>💡</span> Rodrigo (24a · Emprendedor)
+          </button>
+          <button class="dropdown-item" onclick="window.loadDemoPersona('admin')">
+            <span>🏢</span> ProEmpleo Admin
+          </button>
+        </div>
+      </header>
+
+      <!-- Indicador PWA: Bajo Consumo de Datos (TDR Pág. 7) -->
+      <div class="data-saver-pill" id="pwa-status-pill">
+        <span class="pulse-dot"></span>
+        <span>PWA LIGERA · MODO AHORRO DE DATOS ACTIVO (&lt;150 KB)</span>
+      </div>
+
+      <!-- ÁREA DE CONTENIDO DINÁMICO (VISTAS) -->
+      <div class="mobile-scrollable-content" id="mobile-content-container">
+
+        <!-- ========================================== -->
+        <!-- VISTA 1: ONBOARDING & REGISTRO             -->
+        <!-- ========================================== -->
+        <section class="view-panel active" id="view-onboarding">
+          <div class="hero-card">
+            <span class="bp-eyebrow">EMPLEABILIDAD JUVENIL</span>
+            <h2 class="hero-h1">Tu puente al mercado laboral y formación profesional.</h2>
+            <p class="hero-p">
+              Sin costo, 100% orientado a jóvenes de 15 a 29 años. Descubre tus fortalezas, recibe una ruta guiada y accede a vacantes verificadas.
+            </p>
+          </div>
+
+          <form class="auth-form" id="form-onboarding" onsubmit="event.preventDefault(); window.startDiagnosticoFromForm();">
+            <div class="form-group">
+              <label class="form-label" for="input-nombre">Nombre completo</label>
+              <input type="text" id="input-nombre" class="form-input" placeholder="Ej. Mariana Hernández" required value="Mariana Hernández">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-correo">Correo electrónico</label>
+              <input type="email" id="input-correo" class="form-input" placeholder="ejemplo@correo.com" required value="mariana.hernandez@ejemplo.com">
+            </div>
+
+            <!-- Selector de Rango de Edad con Blindaje LFPDPPP -->
+            <div class="form-group">
+              <label class="form-label">Rango de edad</label>
+              <div class="age-toggle-grid">
+                <label class="age-radio-card" id="card-age-minor">
+                  <input type="radio" name="age-bracket" value="minor" id="radio-age-minor" onchange="window.handleAgeChange('minor')">
+                  <span class="age-title">15 a 17 años</span>
+                  <span class="age-sub">Estudiante / Primer acercamiento</span>
+                </label>
+                <label class="age-radio-card selected" id="card-age-adult">
+                  <input type="radio" name="age-bracket" value="adult" id="radio-age-adult" checked onchange="window.handleAgeChange('adult')">
+                  <span class="age-title">18 a 29 años</span>
+                  <span class="age-sub">Búsqueda laboral o carrera</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Caja Informativa de Consentimiento LFPDPPP (Dinámica) -->
+            <div class="lfpdppp-notice" id="lfpdppp-box" style="display: none;">
+              <div class="notice-badge">🛡️ PROTECCIÓN DE DATOS · MENORES DE EDAD (LFPDPPP)</div>
+              <p class="notice-text">
+                Al tener menos de 18 años, tus datos personales no se compartirán públicamente con empresas sin la validación previa de un tutor y de la Fundación ProEmpleo.
+              </p>
+              <div class="form-group-sm">
+                <label class="form-label-sm" for="input-tutor">Nombre de padre, madre o tutor responsable:</label>
+                <input type="text" id="input-tutor" class="form-input-sm" placeholder="Nombre completo del tutor">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="custom-situacion-trigger">Situación actual</label>
+              <!-- Select oculto para mantener compatibilidad con formularios y scripts -->
+              <select id="select-situacion" class="sr-only" style="display: none;">
+                <option value="estudiando">Estudiando (Bachillerato / Universidad)</option>
+                <option value="egresado" selected>Recién egresada(o) · Busco 1er empleo</option>
+                <option value="practicas">Prácticas o servicio social</option>
+                <option value="desempleado">Búsqueda laboral (Con experiencia)</option>
+                <option value="mejorar_empleo">Mejorar empleo actual / Cambio de área</option>
+                <option value="emprendimiento">Emprendimiento o negocio propio</option>
+              </select>
+
+              <!-- Componente Select Custom (100% contenido en el marco móvil) -->
+              <div class="custom-select-wrapper" id="custom-situacion-wrapper">
+                <button type="button" class="custom-select-trigger" id="custom-situacion-trigger" onclick="window.toggleCustomSelect('situacion')" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="custom-select-value" id="custom-situacion-label">Recién egresada(o) · Busco 1er empleo</span>
+                  <svg class="custom-select-chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+
+                <div class="custom-select-dropdown" id="custom-situacion-dropdown" role="listbox" style="display: none;">
+                  <button type="button" class="custom-option" data-value="estudiando" onclick="window.selectCustomOption('situacion', 'estudiando', 'Estudiando (Bachillerato / Universidad)')">
+                    <span class="opt-label">Estudiando (Bachillerato / Universidad)</span>
+                    <span class="opt-check">✓</span>
+                  </button>
+                  <button type="button" class="custom-option selected" data-value="egresado" onclick="window.selectCustomOption('situacion', 'egresado', 'Recién egresada(o) · Busco 1er empleo')">
+                    <span class="opt-label">Recién egresada(o) · Busco 1er empleo</span>
+                    <span class="opt-check">✓</span>
+                  </button>
+                  <button type="button" class="custom-option" data-value="practicas" onclick="window.selectCustomOption('situacion', 'practicas', 'Prácticas o servicio social')">
+                    <span class="opt-label">Prácticas o servicio social</span>
+                    <span class="opt-check">✓</span>
+                  </button>
+                  <button type="button" class="custom-option" data-value="desempleado" onclick="window.selectCustomOption('situacion', 'desempleado', 'Búsqueda laboral (Con experiencia)')">
+                    <span class="opt-label">Búsqueda laboral (Con experiencia)</span>
+                    <span class="opt-check">✓</span>
+                  </button>
+                  <button type="button" class="custom-option" data-value="mejorar_empleo" onclick="window.selectCustomOption('situacion', 'mejorar_empleo', 'Mejorar empleo actual / Cambio de área')">
+                    <span class="opt-label">Mejorar empleo actual / Cambio de área</span>
+                    <span class="opt-check">✓</span>
+                  </button>
+                  <button type="button" class="custom-option" data-value="emprendimiento" onclick="window.selectCustomOption('situacion', 'emprendimiento', 'Emprendimiento o negocio propio')">
+                    <span class="opt-label">Emprendimiento o negocio propio</span>
+                    <span class="opt-check">✓</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="bp-btn bp-btn-primary w-full" id="btn-submit-onboarding">
+              <span>Comenzar Diagnóstico Inicial</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+
+            <p class="privacy-caption">
+              Tus datos están protegidos conforme a la política SGSI y aviso de privacidad de Fundación ProEmpleo.
+            </p>
+          </form>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 2: DIAGNÓSTICO INTERACTIVO           -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-diagnostico">
+          <div class="diagnostic-header">
+            <div class="diag-meta">
+              <span class="bp-eyebrow">INSTRUMENTO OFICIAL PROEMPLEO</span>
+              <span class="step-indicator" id="diag-step-counter">Pregunta 1 de 4</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar-fill" id="diag-progress-bar" style="width: 25%;"></div>
+            </div>
+          </div>
+
+          <!-- Contenedor dinámico de preguntas -->
+          <div class="quiz-container" id="quiz-container">
+            <div class="quiz-card" id="quiz-question-card">
+              <span class="question-cat" id="q-category">Competencias Sociolaborales</span>
+              <h3 class="question-text" id="q-title">Cuando enfrentas un desafío en equipo o una tarea que no dominas, ¿cuál es tu reacción habitual?</h3>
+              
+              <div class="quiz-options-list" id="q-options">
+                <!-- Inyectado por JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Pantalla de Resultados del Diagnóstico (Oculta hasta completar) -->
+          <div class="diagnostic-results-card" id="diagnostic-results" style="display: none;">
+            <div class="result-badge-wrap">
+              <span class="badge-icon">🎯</span>
+              <span class="bp-eyebrow">DIAGNÓSTICO COMPLETADO</span>
+            </div>
+            <h3 class="result-title">Perfil: <span class="highlight-text" id="res-profile-name">Coordinador(a) Operativo & Gestión Digital</span></h3>
+            <p class="result-desc" id="res-profile-desc">
+              Muestras alta capacidad de resiliencia, comunicación asertiva y adaptabilidad digital. Tu principal área de oportunidad es la formalización de experiencia en CV y entrevistas técnicas.
+            </p>
+
+            <!-- Gráfico Radar Interactivo (Canvas) -->
+            <div class="radar-box">
+              <canvas id="radarChart" width="280" height="240"></canvas>
+            </div>
+
+            <div class="recommended-action-box">
+              <div class="rec-icon">⚡</div>
+              <div>
+                <strong>Ruta asignada automáticamente:</strong>
+                <p>Inserción Acelerada · 3 etapas diseñadas por Fundación ProEmpleo</p>
+              </div>
+            </div>
+
+            <button class="bp-btn bp-btn-primary w-full" onclick="window.switchView('ruta')">
+              <span>Ir a Mi Ruta de Crecimiento</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 3: MI RUTA & DASHBOARD               -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-ruta">
+          <!-- Tarjeta de Bienvenida y Gamificación -->
+          <div class="user-summary-card">
+            <div class="summary-top">
+              <div>
+                <span class="bp-eyebrow">MI AVANCE</span>
+                <h3 class="summary-user">Hola, <span id="dash-username">Mariana</span></h3>
+                <span class="dash-route-badge" id="dash-route-badge">Ruta: Inserción Laboral Junior</span>
+              </div>
+              <div class="badge-level">
+                <span class="level-icon">🏅</span>
+                <div>
+                  <div class="level-name">Nivel 1: Explorador</div>
+                  <div class="level-points">180 Puntos TH</div>
+                </div>
+              </div>
+            </div>
+            <div class="progress-wrap-clean">
+              <div class="progress-label-row">
+                <span>Progreso hacia empleabilidad</span>
+                <strong id="dash-progress-percent">40%</strong>
+              </div>
+              <div class="progress-track">
+                <div class="progress-bar-fill" id="dash-progress-fill" style="width: 40%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Siguiente Paso Destacado (Dinámico por Diagnóstico) -->
+          <div class="next-step-card" id="next-step-box">
+            <div class="next-step-tag" id="route-step-tag">SIGUIENTE PASO RECOMENDADO</div>
+            <h4 class="next-step-title" id="route-next-title">Taller: Armadura de CV y Simulación de Entrevistas</h4>
+            <p class="next-step-desc" id="route-next-desc">Taller virtual en vivo de 2 horas con mentores corporativos de ProEmpleo.</p>
+            <div class="next-step-meta" id="route-next-meta">
+              <span>⏱️ 2 horas</span>
+              <span>🎓 Certificado</span>
+              <span>🟢 Próximo: Jueves 17:00 h</span>
+            </div>
+            <div id="route-cta-container">
+              <button class="bp-btn bp-btn-primary btn-sm" id="btn-next-step" onclick="window.enrollNextStepWorkshop()">
+                Inscribirme al Taller Gratuito
+              </button>
+            </div>
+            <div class="enrolled-status-banner" id="enrolled-status-box" style="display: none;">
+              <span class="enrolled-icon">🎓</span>
+              <div>
+                <strong>¡Lugar asegurado en el programa!</strong>
+                <p>Acceso al aula virtual habilitado y grupo de seguimiento asignado.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta Celebratoria al Alcanzar el 100% de Empleabilidad -->
+          <div class="route-completion-card" id="route-completion-card" style="display: none;">
+            <div class="completion-trophy">🏆</div>
+            <div class="completion-info">
+              <span class="completion-badge">META 100% ALCANZADA · CASO DE ÉXITO</span>
+              <h4 class="completion-title">¡Contratación Formal Confirmada!</h4>
+              <p class="completion-desc">
+                Mariana ha completado satisfactoriamente su ruta y fue contratada formalmente como <strong>Auxiliar de Operaciones Junior</strong> en <strong>Distribuidora Central</strong> (Red Aliada ProEmpleo).
+              </p>
+
+              <!-- Siguiente Paso de Acompañamiento (Pilar 04 · Retención 90 Días) -->
+              <div class="next-phase-box">
+                <span class="next-phase-tag">🎯 SIGUIENTE PASO: MENTORÍA DE PERMANENCIA (90 DÍAS)</span>
+                <p class="next-phase-text">
+                  Para asegurar tu adaptación y éxito laboral, se activó tu mentoría personalizada con la red <strong>ProEmpleo Alumni</strong> para tus primeros 3 meses en la empresa.
+                </p>
+              </div>
+
+              <div class="completion-actions">
+                <button type="button" class="bp-btn bp-btn-primary btn-sm" onclick="window.downloadConstanciaDigital()">
+                  📄 Descargar Constancia Digital
+                </button>
+                <button type="button" class="bp-btn bp-btn-outline btn-sm" onclick="window.showToast('Mentor asignado: Lic. Roberto Valdés (ProEmpleo Alumni · Sesión 1: Jueves 18h).')">
+                  🤝 Conectar con Mentor Alumni
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hitos de la Ruta Secuencial -->
+          <div class="route-timeline">
+            <h4 class="timeline-heading">Tu Ruta Paso a Paso</h4>
+
+            <!-- Paso 1 -->
+            <div class="timeline-step completed" id="timeline-step-1">
+              <div class="step-marker">✓</div>
+              <div class="step-content">
+                <div class="step-header">
+                  <span class="step-title" id="route-step1-title">1. Diagnóstico de Competencias</span>
+                  <span class="step-status">Completado</span>
+                </div>
+                <p class="step-body" id="route-step1-desc">Evaluación de habilidades y barreras completada con éxito.</p>
+              </div>
+            </div>
+
+            <!-- Paso 2 -->
+            <div class="timeline-step active" id="timeline-step-2">
+              <div class="step-marker" id="step-2-marker">2</div>
+              <div class="step-content">
+                <div class="step-header">
+                  <span class="step-title" id="route-step2-title">2. Fortalecimiento de Habilidades Clave</span>
+                  <span class="step-status in-progress" id="step-2-status">En curso</span>
+                </div>
+                <p class="step-body" id="route-step2-desc">Cursos y talleres formativos en ProEmpleo:</p>
+                <div class="resource-pills" id="route-pills-container">
+                  <a href="#catalogo" class="resource-pill" onclick="window.goToCatalogWithFilter('curso', 6); return false;">
+                    💻 Certificación en Productividad Digital (Google) ↗
+                  </a>
+                  <a href="#catalogo" class="resource-pill" onclick="window.goToCatalogWithFilter('curso', 1); return false;">
+                    💡 Taller Emprende (Fundación ProEmpleo) ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paso 3 -->
+            <div class="timeline-step" id="timeline-step-3">
+              <div class="step-marker" id="step-3-marker" style="background: var(--pe-teal); color: #fff;">3</div>
+              <div class="step-content">
+                <div class="step-header">
+                  <span class="step-title" id="route-step3-title">3. Vinculación con Vacantes y Mentorías</span>
+                  <span class="step-status in-progress" id="step-3-status">Exploración activa</span>
+                </div>
+                <p class="step-body" id="route-step3-desc">Explora las oportunidades laborales y convenios verificados:</p>
+                
+                <!-- Caja de Entrevista Agendada (Aparece en etapa Aceptado / 85%) -->
+                <div class="interview-scheduled-box" id="step-3-interview-box" style="display: none;">
+                  <div class="interview-header">
+                    <span class="interview-tag">👔 ENTREVISTA AGENDADA</span>
+                    <span class="interview-date">Jueves 11:00 h</span>
+                  </div>
+                  <strong>Auxiliar de Operaciones Junior</strong>
+                  <p>Distribuidora Central (Red Aliada ProEmpleo) · Modalidad Presencial CDMX</p>
+                  <div style="margin-top: 8px;">
+                    <button type="button" class="bp-btn bp-btn-primary btn-sm" onclick="window.showToast('Detalles y contacto de reclutamiento enviados a tu correo.')" style="font-size: 11px; padding: 4px 10px;">
+                      Ver Ficha de Entrevista ↗
+                    </button>
+                  </div>
+                </div>
+
+                <div class="resource-pills" id="step-3-pills">
+                  <a href="#catalogo" class="resource-pill" onclick="window.goToCatalogWithFilter('empleo'); return false;">
+                    💼 Ver Bolsa de Empleo Junior ↗
+                  </a>
+                  <a href="#catalogo" class="resource-pill" onclick="window.goToCatalogWithFilter('practicas'); return false;">
+                    📑 Ver Prácticas y Servicio Social ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mis Postulaciones Activas (Se llena al postularse) -->
+          <div class="my-applications-card" id="my-apps-card" style="display: none;">
+            <div class="my-apps-header">
+              <span class="my-apps-title">📁 Mis Postulaciones Activas</span>
+              <span class="my-apps-badge" id="my-apps-count">1 postulación</span>
+            </div>
+            <div class="my-apps-list" id="my-apps-list">
+              <!-- Inyectado dinámicamente al postularse -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 4: CATÁLOGO DE OPORTUNIDADES         -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-catalogo">
+          <div class="catalogo-header">
+            <span class="bp-eyebrow">ECOSISTEMA DE OPORTUNIDADES</span>
+            <h3 class="catalogo-title">Vacantes, Prácticas y Cursos Verificados</h3>
+            <p class="catalogo-subtitle">Todas las oportunidades son validadas por el equipo de Fundación ProEmpleo.</p>
+          </div>
+
+          <!-- Buscador en tiempo real -->
+          <div class="catalog-search-box">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="catalog-search-input" class="catalog-search-input" placeholder="Buscar por vacante, habilidad o empresa..." oninput="window.handleSearchCatalog(this.value)">
+            <button type="button" class="catalog-search-clear" id="catalog-search-clear" onclick="window.clearCatalogSearch()" style="display: none;">✕</button>
+          </div>
+
+          <!-- Filtros Rápidos -->
+          <div class="filter-chips-row">
+            <button class="filter-chip active" data-filter="all" id="chip-filter-all" onclick="window.filterOpportunities('all', this)">Todos (<span id="cat-count-all">6</span>)</button>
+            <button class="filter-chip" data-filter="empleo" onclick="window.filterOpportunities('empleo', this)">Empleo Junior</button>
+            <button class="filter-chip" data-filter="practicas" onclick="window.filterOpportunities('practicas', this)">Prácticas / Social</button>
+            <button class="filter-chip" data-filter="curso" onclick="window.filterOpportunities('curso', this)">Cursos ProEmpleo</button>
+          </div>
+
+          <!-- Lista de Tarjetas de Oportunidad -->
+          <div class="opportunities-grid" id="opportunities-list">
+            <!-- Renderizado por JS -->
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 5: BACKOFFICE ADMIN PROEMPLEO       -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-admin">
+          <div class="admin-header-card">
+            <div class="admin-badge">PANEL ADMINISTRATIVO · FUNDACIÓN PROEMPLEO</div>
+            <h3 class="admin-title">Monitoreo de Impacto y Gestión de Ecosistema</h3>
+            <p class="admin-desc">Control total sobre usuarios, diagnósticos, aprobación de vacantes y exportación para donantes.</p>
+          </div>
+
+          <!-- Métricas de Impacto Directivo (BPDS Metrics) -->
+          <div class="admin-kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-num">1,420</div>
+              <div class="kpi-label">Jóvenes Registrados</div>
+              <div class="kpi-ctx">Región Centro · Últimos 60 días</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-num highlight-cyan">88.4%</div>
+              <div class="kpi-label">Diagnósticos Concluidos</div>
+              <div class="kpi-ctx">Tasa de finalización de onboarding</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-num">312</div>
+              <div class="kpi-label">Vinculaciones Efectivas</div>
+              <div class="kpi-ctx">Canalizaciones a empleo y talleres</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-num highlight-lime" id="kpi-vacantes-num">45</div>
+              <div class="kpi-label">Vacantes Publicadas</div>
+              <div class="kpi-ctx">38 empresas aliadas activas</div>
+            </div>
+          </div>
+
+          <!-- Simulador de Ciclo de Vida del Participante (Requerimiento de Demostración) -->
+          <div class="admin-user-flow-card">
+            <div class="flow-card-header">
+              <span class="admin-badge">CONTROL DE AVANCE DEL JOVEN (1-CLIC)</span>
+              <h4 style="font-size: 13.5px; font-weight: 600; margin: 4px 0 2px;">
+                Expediente: Mariana Hernández · Estado: <span id="admin-current-stage-tag" class="stage-tag-pill stage-diagnostico">40% En Diagnóstico</span>
+              </h4>
+              <p style="font-size: 11px; color: var(--pe-text-dim); margin-bottom: 8px;">
+                Simula la transición de estados para evaluar cómo se desbloquean los hitos y el 100% en Mi Ruta:
+              </p>
+            </div>
+            <div class="stage-button-group">
+              <button type="button" class="stage-btn active" id="btn-stage-diagnostico" onclick="window.setParticipantStage('diagnostico')">
+                <span class="stage-num">1</span>
+                <span>40% Diagnóstico</span>
+              </button>
+              <button type="button" class="stage-btn" id="btn-stage-capacitacion" onclick="window.setParticipantStage('capacitacion')">
+                <span class="stage-num">2</span>
+                <span>65% Capacitación</span>
+              </button>
+              <button type="button" class="stage-btn" id="btn-stage-aceptado" onclick="window.setParticipantStage('aceptado')">
+                <span class="stage-num">3</span>
+                <span>85% Aceptado</span>
+              </button>
+              <button type="button" class="stage-btn highlight" id="btn-stage-finalizado" onclick="window.setParticipantStage('finalizado')">
+                <span class="stage-num">🏆</span>
+                <span>100% Finalizado</span>
+              </button>
+            </div>
+
+            <!-- Botón de Acceso Inmediato a Mi Ruta -->
+            <button type="button" class="bp-btn bp-btn-primary btn-view-route-cta" onclick="window.switchView('ruta')" id="btn-admin-goto-ruta">
+              <span>📱 Ver Pantalla de Mariana en Mi Ruta ↗</span>
+            </button>
+          </div>
+
+          <!-- Módulo de Dictamen y Gestión de Postulaciones (Transición de Fases) -->
+          <div class="admin-postulations-box" id="admin-postulations-box">
+            <div class="post-box-header">
+              <div>
+                <span class="admin-badge">GESTIÓN DE POSTULACIONES Y DICTAMEN</span>
+                <h4 style="font-size: 13.5px; font-weight: 600; margin: 4px 0 2px;">
+                  Postulaciones Activas: Mariana Hernández
+                </h4>
+                <p style="font-size: 11px; color: var(--pe-text-dim); margin-bottom: 6px;">
+                  Modifica la fase de cada postulación para evaluar la reactividad en el celular del joven:
+                </p>
+              </div>
+              <span class="post-count-badge" id="admin-post-count-badge">4 activas</span>
+            </div>
+
+            <!-- Botones de Acción Rápida Global -->
+            <div class="admin-post-macro-actions">
+              <button type="button" class="btn-macro-action highlight-blue" onclick="window.advanceMainPostulation('entrevista')">
+                <span>📅 Agendar Entrevista (Distribuidora Central)</span>
+              </button>
+              <button type="button" class="btn-macro-action highlight-green" onclick="window.advanceMainPostulation('aceptado')">
+                <span>🎉 Emitir Carta de Aceptación / Empleo</span>
+              </button>
+            </div>
+
+            <!-- Lista de Postulaciones con Dictamen Individual -->
+            <div class="admin-post-items-list" id="admin-post-items-list">
+              <!-- Renderizado dinámicamente por app.js -->
+            </div>
+          </div>
+
+          <!-- Módulo de Cartera de Talento y Banco de Candidatos (Opción B) -->
+          <div class="admin-cartera-box" id="admin-cartera-box">
+            <div class="cartera-box-header">
+              <div>
+                <span class="admin-badge">BANCO DE TALENTO PRE-CALIFICADO</span>
+                <h4 style="font-size: 13.5px; font-weight: 600; margin: 4px 0 2px;">
+                  Cartera de Talento: Candidatos en Espera Activa
+                </h4>
+                <p style="font-size: 11px; color: var(--pe-text-dim); margin-bottom: 6px;">
+                  Jóvenes con perfil IMPATH™ acreditado listos para re-canalización directa a nuevas vacantes:
+                </p>
+              </div>
+              <span class="cartera-count-badge" id="cartera-count-badge">3 en cartera</span>
+            </div>
+
+            <!-- Filtros de Cartera -->
+            <div class="cartera-filter-tabs">
+              <button type="button" class="cartera-tab-btn active" id="tab-cartera-all" onclick="window.filterCartera('all')">Todos (3)</button>
+              <button type="button" class="cartera-tab-btn" id="tab-cartera-operaciones" onclick="window.filterCartera('operaciones')">Operaciones (1)</button>
+              <button type="button" class="cartera-tab-btn" id="tab-cartera-admin" onclick="window.filterCartera('admin')">Administración (1)</button>
+              <button type="button" class="cartera-tab-btn" id="tab-cartera-digital" onclick="window.filterCartera('digital')">Digital (1)</button>
+            </div>
+
+            <!-- Lista de Candidatos en Cartera -->
+            <div class="admin-cartera-items-list" id="admin-cartera-items-list">
+              <!-- Renderizado dinámicamente por app.js -->
+            </div>
+          </div>
+
+          <!-- Tabla de Gestión de Jóvenes -->
+          <div class="admin-table-box">
+            <div class="table-head-row">
+              <h4>Jóvenes en Seguimiento Activo</h4>
+              <button class="bp-btn bp-btn-outline btn-sm" onclick="window.exportDonorCSV()">
+                <span>⬇️ Descargar Reporte (.CSV)</span>
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="bp-table">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Perfil Asignado</th>
+                    <th>Estado de Ruta</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-table-body">
+                  <!-- Renderizado dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Módulo de Moderación de Vacantes (Reactivo) -->
+          <div class="admin-moderation-box">
+            <div class="mod-header-row">
+              <h4>Vacantes Pendientes de Aprobación</h4>
+              <span class="mod-badge-count" id="mod-badge-count">1 pendiente</span>
+            </div>
+            <div class="mod-item" id="pending-vacante-item">
+              <div>
+                <strong>Auxiliar de Logística y Almacén</strong>
+                <p>Empresa: Distribuidora Central · Salario: $9,500 MXN · CDMX</p>
+                <span class="mod-tag-draft">Recibida hoy · Requiere validación ProEmpleo</span>
+              </div>
+              <div class="mod-actions">
+                <button class="btn-mod-approve" id="btn-approve-vacante" onclick="window.approvePendingVacancy()">Aprobar</button>
+                <button class="btn-mod-reject" onclick="window.showToast('Vacante devuelta para corrección a la empresa.')">Revisar</button>
+              </div>
+            </div>
+            <div class="mod-cleared-banner" id="mod-cleared-box" style="display: none;">
+              <span class="cleared-icon">✅</span>
+              <div>
+                <strong>¡Bandeja de moderación al día!</strong>
+                <p>Todas las vacantes recibidas han sido aprobadas y publicadas en el catálogo en vivo.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div> <!-- Fin mobile-scrollable-content -->
+
+      <!-- Barra de Navegación Inferior (Móvil) -->
+      <nav class="phone-bottom-nav">
+        <button class="bnav-btn active" data-view="onboarding" onclick="window.switchView('onboarding')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+          <span>Inicio</span>
+        </button>
+        <button class="bnav-btn" data-view="diagnostico" onclick="window.switchView('diagnostico')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+          <span>Diagnóstico</span>
+        </button>
+        <button class="bnav-btn" data-view="ruta" onclick="window.switchView('ruta')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span>Mi Ruta</span>
+        </button>
+        <button class="bnav-btn" data-view="catalogo" onclick="window.switchView('catalogo')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          <span>Vacantes</span>
+        </button>
+      </nav>
+
+      <!-- MODAL DE DETALLE DE OPORTUNIDAD (DENTRO DE LA PANTALLA DEL CELULAR) -->
+      <div class="modal-backdrop" id="opportunity-modal" style="display: none;">
+        <div class="modal-sheet">
+          <div class="modal-handle"></div>
+          <button class="modal-close-btn" onclick="window.closeModal()" aria-label="Cerrar modal">✕</button>
+          
+          <div id="modal-content">
+            <!-- Rellenado por JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TOAST DE NOTIFICACIONES EN VIVO (DENTRO DE LA PANTALLA DEL CELULAR) -->
+      <div class="toast-notification" id="toast">
+        <span class="toast-dot"></span>
+        <span id="toast-text">Acción ejecutada correctamente</span>
+      </div>
+
+    </div> <!-- Fin phone-shell -->
+
+  </main>
+
+    <!-- ========================================================================== -->
+    <!-- BARRA VERTICAL DERECHA CON LOS MISMOS ELEMENTOS Y LOGO                     -->
+    <!-- ========================================================================== -->
+    <aside class="demo-sidebar-right" aria-label="Controles y Vistas del Prototipo">
+      <div class="sidebar-header-block">
+        <div class="brand-badge-vertical">
+          <img src="logo_proempleo.png" alt="Fundación ProEmpleo" class="sidebar-pe-logo">
+          <div class="brand-collab-row">
+            <span class="sep">×</span>
+            <span class="brand-bp">BLUEPIXEL</span>
+          </div>
+        </div>
+        <span class="doc-tag-sidebar">CONVOCATORIA TH-2026</span>
+      </div>
+
+      <!-- Casos de Uso Demo (1-Clic) para Evaluación y Presentación -->
+      <div class="sidebar-persona-section">
+        <span class="sidebar-label">CASOS DE USO DEMO (1-CLIC)</span>
+        <div class="persona-btn-list">
+          <button class="persona-quick-btn active" id="btn-persona-mariana" onclick="window.loadDemoPersona('mariana')">
+            <span class="p-icon">👤</span>
+            <div class="p-meta">
+              <strong>Mariana (22 años)</strong>
+              <span>Egresada · Primer Empleo</span>
+            </div>
+          </button>
+          <button class="persona-quick-btn" id="btn-persona-carlos" onclick="window.loadDemoPersona('carlos')">
+            <span class="p-icon">👦</span>
+            <div class="p-meta">
+              <strong>Carlos (16 años)</strong>
+              <span>Menor · Consentimiento Tutor</span>
+            </div>
+          </button>
+          <button class="persona-quick-btn" id="btn-persona-rodrigo" onclick="window.loadDemoPersona('rodrigo')">
+            <span class="p-icon">💡</span>
+            <div class="p-meta">
+              <strong>Rodrigo (24 años)</strong>
+              <span>Autoempleo · Taller Emprende</span>
+            </div>
+          </button>
+          <button class="persona-quick-btn" id="btn-persona-admin" onclick="window.loadDemoPersona('admin')">
+            <span class="p-icon">🏢</span>
+            <div class="p-meta">
+              <strong>ProEmpleo Admin</strong>
+              <span>Moderación & Métricas</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Selector de Vistas Vertical -->
+      <div class="sidebar-nav-section">
+        <span class="sidebar-label">VISTAS DEL PROTOTIPO</span>
+        <nav class="view-switcher-vertical" aria-label="Selector de Vistas">
+          <button class="nav-tab active" data-view="onboarding" id="tab-onboarding">
+            <span class="tab-num">01</span>
+            <span class="tab-text">Registro & Onboarding</span>
+          </button>
+          <button class="nav-tab" data-view="diagnostico" id="tab-diagnostico">
+            <span class="tab-num">02</span>
+            <span class="tab-text">Diagnóstico Inicial</span>
+          </button>
+          <button class="nav-tab" data-view="ruta" id="tab-ruta">
+            <span class="tab-num">03</span>
+            <span class="tab-text">Mi Ruta & Dashboard</span>
+          </button>
+          <button class="nav-tab" data-view="catalogo" id="tab-catalogo">
+            <span class="tab-num">04</span>
+            <span class="tab-text">Catálogo de Vacantes</span>
+          </button>
+          <button class="nav-tab admin-tab" data-view="admin" id="tab-admin">
+            <span class="tab-num">05</span>
+            <span class="tab-text">Backoffice ProEmpleo</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Control de Formato y Dispositivo -->
+      <div class="sidebar-footer-section">
+        <span class="sidebar-label">FORMATO DE PANTALLA</span>
+        <button class="device-toggle-btn w-full" id="btn-device-toggle" title="Alternar entre vista celular y pantalla completa">
+          <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>
+          <span id="device-label">Marco Celular (Mobile-First)</span>
+        </button>
+
+        <div class="sidebar-meta-box">
+          <div class="meta-row"><span class="meta-dot"></span> <strong>Proyecto:</strong> Talent Hub</div>
+          <div class="meta-row"><strong>Entidad:</strong> ProEmpleo A.C.</div>
+          <div class="meta-row"><strong>Squad:</strong> BluePixel B2B</div>
+        </div>
+      </div>
+    </aside>
+
+  </div> <!-- Fin demo-layout-container -->
+
+  <script src="app.js"></script>
+</body>
+</html>
